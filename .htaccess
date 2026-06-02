@@ -1,0 +1,30 @@
+# ── SwellTracker Global — .htaccess ──────────────────────
+# Redirige automáticamente las URLs antiguas .html → .php
+# Funciona en subcarpetas (XAMPP, WAMP, LAMP, etc.)
+
+Options -Indexes
+DirectoryIndex index.php index.html
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # ── Redirigir .html → .php cuando el .php existe ──────
+    # No redirige si ya es un archivo real o directorio
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME}\.php -f
+    RewriteRule ^(.+)\.html$ %{REQUEST_URI}/../$1.php [R=301,L]
+
+    # ── Alias directos para los archivos conocidos ─────────
+    RewriteRule ^index\.html$         index.php         [R=301,L,NC]
+    RewriteRule ^olas\.html$          olas.php          [R=301,L,NC]
+    RewriteRule ^tutoriales\.html$    tutoriales.php    [R=301,L,NC]
+    RewriteRule ^equipamiento\.html$  equipamiento.php  [R=301,L,NC]
+    RewriteRule ^[Jj]uego\.html$      Juego.php         [R=301,L,NC]
+    RewriteRule ^login\.html$         login.php         [R=301,L,NC]
+</IfModule>
+
+# Cabeceras de seguridad básicas
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+</IfModule>
